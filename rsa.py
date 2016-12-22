@@ -1,3 +1,5 @@
+import math
+
 def isPrime(prime):
 	"""Checks if a number is prime"""
 	if prime <= 1:
@@ -14,8 +16,23 @@ def isPrime(prime):
 	return True
 
 def generatePrimes(min, max):
-	"""Generates primes of a certain length"""
-	pass
+	"""Generates primes of a certain length using the sieve of Eratosthenes"""
+	if min < 1:
+		return False
+	primes = {}
+	for x in range(min, max, 2):
+		primes[x] = True
+	for y in range(min, int(math.sqrt(max))):
+		if primes[y] == True:
+			for z in range(y*y, max, y):
+				primes[z] = False
+	finalPrimes = []
+	for a in range(1, len(primes) + 1):
+		if primes[a] == True:
+			finalPrimes.append(primes[a])
+		else:
+			pass
+	return finalPrimes
 
 def keyGen():
 	"""Generates prime numbers and uses them to create a public private key pair"""
