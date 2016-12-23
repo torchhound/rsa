@@ -22,6 +22,14 @@ class RSATests(unittest.TestCase):
 			else:
 				pass
 		self.assertTrue(flag) 
+
+	def testGenerateZeroPrimes(self):
+		"""Test behavior of generatePrimes when no primes are found"""
+		self.assertFalse(rsa.generatePrimes(20, 21))
+
+	def testModMultiInverse(self):
+		"""Test modMultiInverse with known input and output"""
+		self.assertTrue(rsa.modMultiInverse(17, 3120) == 2753)
 '''
 	def testEncrypt(self):
 		"""Checks output of encrypt function"""

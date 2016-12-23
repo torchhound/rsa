@@ -1,4 +1,11 @@
 import math
+import random
+
+def modMultiInverse(exp, totient):
+	"""Computes the modular multiplicative inverse"""
+	if isPrime(totient) == True:
+		return exp**(totient - 2) % totient
+	pass
 
 def isPrime(prime):
 	"""Checks if a number is prime"""
@@ -32,20 +39,29 @@ def generatePrimes(min, max):
 			finalPrimes.append(primes[a])
 		else:
 			pass
-	return finalPrimes
+	if len(finalPrimes) == 0:
+		return False
+	else:
+		return finalPrimes
 
 def keyGen():
 	"""Generates prime numbers and uses them to create a public private key pair"""
-	pass
+	p1 = random.choice(generatePrimes(1, random.randrange(1000, 1000000)))
+	p2 = random.choice(generatePrimes(1, random.randrange(1000, 1000000)))
+	mod = p1 * p2
+	totient = (p1 -1) * (p2 - 1)
+	exp = random.choice(generatePrimes(1, totient))
+	private = modMultiInverse(exp, totient)
+	return mod, exp, private
 
-def encrypt(plaintext, public, mod):
+def encrypt(plaintext, publicExp, publicMod):
 	"""Encrypts a message using a public key"""
-	final = [(ord(x) ** public) % mod for x in plaintext] #because pow() does not support bytes
+	final = [(ord(x) ** publicExp) % publicMod for x in plaintext] #because pow() does not support bytes
 	return final
 
-def decrypt(ciphertext, private, mod):
+def decrypt(ciphertext, private, publicMod):
 	"""Decrypts a message using a private key"""
-	final = [chr((x ** private) % mod) for x in ciphertext]
+	final = [chr((x ** private) % publicMod) for x in ciphertext]
 	return final
 
 def main():
