@@ -3,9 +3,11 @@ import random
 
 def modMultiInverse(exp, totient):
 	"""Computes the modular multiplicative inverse"""
-	if isPrime(totient) == True:
-		return exp**(totient - 2) % totient
-	pass
+	exp = exp % totient
+	for x in range(1, totient):
+		if (exp * x) % totient == 1:
+			return x
+	return False
 
 def isPrime(prime):
 	"""Checks if a number is prime"""
@@ -34,15 +36,12 @@ def generatePrimes(min, max):
 			for z in range(y*y, max, y):
 				primes[z] = False
 	finalPrimes = []
-	for a in range(1, len(primes) + 1):
+	for a in range(1, len(primes)):
 		if primes[a] == True:
 			finalPrimes.append(primes[a])
 		else:
 			pass
-	if len(finalPrimes) == 0:
-		return False
-	else:
-		return finalPrimes
+	return finalPrimes
 
 def keyGen():
 	"""Generates prime numbers and uses them to create a public private key pair"""
