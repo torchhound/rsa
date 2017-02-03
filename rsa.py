@@ -53,15 +53,34 @@ def keyGen():
 	private = modMultiInverse(exp, totient)
 	return mod, exp, private
 
+def checkInt(input):
+	"""Checks if input is an integer"""
+	if isinstance(input, int):
+		return True
+	else:
+		raise TypeError
+
 def encrypt(plaintext, publicExp, publicMod):
 	"""Encrypts a message using a public key"""
-	final = [(ord(x) ** publicExp) % publicMod for x in plaintext] #because pow() does not support bytes
-	return final
+	try:
+		checkInt(plaintext)
+		checkInt(publicExp)
+		checkInt(publicMod)
+	except(TypeError):
+		print("An input into rsa.encrypt() was not an integer")
+		return False
+	return pow(plaintext, publicExp, publicMod)
 
 def decrypt(ciphertext, private, publicMod):
 	"""Decrypts a message using a private key"""
-	final = [chr((x ** private) % publicMod) for x in ciphertext]
-	return final
+	try:
+		checkInt(ciphertext)
+		checkInt(private)
+		checkInt(publicMod)
+	except(TypeError):
+		print("An input into rsa.encrypt() was not an integer")
+		return False
+	return pow(ciphertext, private, publicMod)
 
 def main():
 	"""Debugging rsa functions"""
